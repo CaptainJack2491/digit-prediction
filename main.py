@@ -4,7 +4,6 @@ import io
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-# from tensorflow.keras import layers
 from matplotlib import pyplot as plt
 # import pygame
 from PIL import Image, ImageOps
@@ -86,84 +85,6 @@ def convert_img(image_data):
 
 
 
-# def test():
-#     # initialize Pygame
-#     pygame.init()
-
-#     # set the dimensions of the drawing window
-#     WINDOW_SIZE = (280, 280)
-
-#     # create the drawing window
-#     screen = pygame.display.set_mode(WINDOW_SIZE)
-#     pygame.display.set_caption("Draw a digit")
-
-#     # define the colors
-#     BLACK = (0, 0, 0)
-#     WHITE = (255, 255, 255)
-
-#     # set the default brush size and color
-#     brush_size = 15
-#     brush_color = BLACK
-
-#     # create a surface to draw on
-#     canvas = pygame.Surface((WINDOW_SIZE[0], WINDOW_SIZE[1]))
-
-#     # set the font for the instructions
-#     font = pygame.font.SysFont("Arial", 20)
-
-#     # create a label to display instructions
-#     instructions = font.render("Draw a digit and press 'c' to clear or 'Enter' to save", True, BLACK)
-
-#     # set the position of the instructions
-#     instructions_rect = instructions.get_rect()
-#     instructions_rect.center = (WINDOW_SIZE[0] // 2, 20)
-
-#     # start the Pygame event loop
-#     running = True
-#     while running:
-#         # check for events
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 running = False
-#             elif event.type == pygame.MOUSEBUTTONDOWN:
-#                 # if the left mouse button is clicked, start drawing
-#                 if event.button == 1:
-#                     pygame.draw.circle(canvas, brush_color, event.pos, brush_size)
-#             elif event.type == pygame.MOUSEMOTION:
-#                 # if the mouse is moved while the left button is held down, draw a line
-#                 if event.buttons[0]:
-#                     pygame.draw.circle(canvas, brush_color, event.pos, brush_size)
-#             elif event.type == pygame.KEYDOWN:
-#                 # if 'c' is pressed, clear the canvas
-#                 if event.key == pygame.K_c:
-#                     canvas.fill(WHITE)
-#                 # if Enter is pressed, save the image and exit
-#                 elif event.key == pygame.K_RETURN:
-#                     running = False
-
-#         # draw the instructions and canvas to the screen
-#         screen.fill(WHITE)
-#         screen.blit(instructions, instructions_rect)
-#         screen.blit(canvas, (0, 0))
-
-#         # update the display
-#         pygame.display.update()
-
-#     # convert the canvas to a grayscale image
-#     gray_img = pygame.surfarray.array2d(canvas)
-#     fliped_img = gray_img.transpose()
-#     img = Image.fromarray(fliped_img).convert('L')
-#     img.save('img.png')
-#     resized_img = img.resize((28,28))
-#     arr = np.array(resized_img)
-#     arr = 255 - arr
-#     arr = arr / 255.0
-#     arr = np.expand_dims(arr, axis=0)
-#     # quit Pygame
-#     pygame.quit()
-
-#     return arr
-
 learning_rate = 0.03
 epochs = 50
 batch_size = 4000
@@ -210,11 +131,3 @@ def home():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
-
-
-# prediction = my_model.predict(test())
-# for i in prediction:
-#     count = 0
-#     for j in i:
-#         print(count,':',(j*100).round(),'%')
-#         count += 1
