@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from matplotlib import pyplot as plt
-# import pygame
 from PIL import Image, ImageOps
 from flask import Flask, render_template, request
 
@@ -61,6 +60,7 @@ def train_model(model, train_features, train_labels, epochs, batch_size=None, va
     return epochs, hist
 
 def convert_img(image_data):
+    """converts the base64-encoded data URI into a (None,28,28) numpy array"""
     # Extract the base64-encoded data from the data URI
     data = image_data.split(',')[1]
 
@@ -70,7 +70,7 @@ def convert_img(image_data):
     # Create a BytesIO object from the decoded byte string
     bytes_io = io.BytesIO(decoded_data)
 
-    #convert and resize the image
+    # Convert and resize the image
     img = Image.open(bytes_io)
     background = Image.new('L',img.size,255)
     background.paste(img,img)
@@ -82,7 +82,6 @@ def convert_img(image_data):
     arr = np.expand_dims(arr,axis=0)
 
     return arr
-
 
 
 learning_rate = 0.03
@@ -98,9 +97,13 @@ else:
 
     epoch,hist = train_model(my_model,train_features=x_train_normalized, train_labels=y_train,
                          epochs=epochs, batch_size=batch_size, validation_split=validation_split)
-    list_of_metrics_to_plot = ['accuracy']
-    # plot_curves(epoch,hist,list_of_metrics_to_plot)
 
+
+    # uncomment the follwing if u wanna mess around with the training of the model.
+    # the model i am using(the one in the repo gives about 98% validation accuracy)
+
+    # list_of_metrics_to_plot = ['accuracy']
+    # plot_curves(epoch,hist,list_of_metrics_to_plot)
     # print("\n Evaluate the model against the test set:")
     # my_model.evaluate(x=x_test_normalized, y=y_test, batch_size=batch_size)
 
