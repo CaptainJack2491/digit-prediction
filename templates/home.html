@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Paint App</title>
+    <script type="text/javascript">
+        // Variables for tracking the mouse position and drawing state
+        var canvas, context, canvasX, canvasY, isDrawing = false;
+
+        // Initialize the canvas and context
+        window.onload = function() {
+            canvas = document.getElementById('canvas');
+            context = canvas.getContext('2d');
+        };
+
+        // Start drawing when the mouse button is pressed
+        function startDrawing(e) {
+            isDrawing = true;
+            canvasX = e.pageX - canvas.offsetLeft;
+            canvasY = e.pageY - canvas.offsetTop;
+        }
+
+        // Stop drawing when the mouse button is released
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Draw a line segment when the mouse is moved
+        function draw(e) {
+            if (isDrawing) {
+                var newCanvasX = e.pageX - canvas.offsetLeft;
+                var newCanvasY = e.pageY - canvas.offsetTop;
+                context.beginPath();
+                context.moveTo(canvasX, canvasY);
+                context.lineTo(newCanvasX, newCanvasY);
+                context.lineWidth = 10
+                context.stroke();
+                canvasX = newCanvasX;
+                canvasY = newCanvasY;
+            }
+        }
+
+        // Submit the image data when the user is done drawing
+        function submitImage() {
+            var imageData = canvas.toDataURL();
+            var form = document.createElement('form');
+            form.setAttribute('method', 'POST');
+            form.setAttribute('action', '/');
+            var input = document.createElement('input');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', 'image_data');
+            input.setAttribute('value', imageData);
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+</head>
+<body>
+    <h1>Paint App</h1>
+    <canvas id="canvas" width="400" height="400" style="border: 1px solid black;"
+            onmousedown="startDrawing(event)"
+            onmouseup="stopDrawing()"
+            onmousemove="draw(event)"></canvas>
+    <br>
+    <button onclick="submitImage()">Save Image</button>
+</body>
+</html>
