@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 from matplotlib import pyplot as plt
-from PIL import Image, ImageOps
+from PIL import Image, ImageFilter
 from flask import Flask, render_template, request
 
 (x_train,y_train),(x_test,y_test) = tf.keras.datasets.mnist.load_data()
@@ -75,10 +75,11 @@ def convert_img(image_data):
     background = Image.new('L',img.size,255)
     background.paste(img,img)
     img = background.resize((28,28))
+    img = img.filter(ImageFilter.GaussianBlur(radius=1))
 
     arr = np.array(img)
     arr = 255 - arr
-
+    arr = arr / 255.0
     arr = np.expand_dims(arr,axis=0)
 
     return arr
@@ -118,12 +119,18 @@ def home():
         # Handle the submitted image data
         image_data = request.form['image_data']
         converted_img = convert_img(image_data)
-        print(converted_img)
+
         # Use the pre-trained model to predict the digit
-        digit = my_model.predict(converted_img)
-        
+        prediction = my_model.predict(converted_img)
+
+        for i in prediction:
+            count = 0
+            for j in i:
+                print(count,':',(j*100).round(),'%')
+                count += 1
+            
         # Convert the predicted digit to a string
-        digit_str = str(np.argmax(digit)+1)
+        digit_str = str(np.argmax(prediction))
 
         return f"The digit is {digit_str}"
     
@@ -132,5 +139,5 @@ def home():
         
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 

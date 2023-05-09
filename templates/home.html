@@ -29,15 +29,22 @@
             if (isDrawing) {
                 var newCanvasX = e.pageX - canvas.offsetLeft;
                 var newCanvasY = e.pageY - canvas.offsetTop;
-                context.beginPath();
-                context.moveTo(canvasX, canvasY);
-                context.lineTo(newCanvasX, newCanvasY);
-                context.lineWidth = 10
-                context.stroke();
+                var distance = Math.sqrt((canvasX - newCanvasX) ** 2 + (canvasY - newCanvasY) ** 2);
+                var angle = Math.atan2(newCanvasY - canvasY, newCanvasX - canvasX);
+                for (var i = 0; i < distance; i++) {
+                    var x = canvasX + Math.cos(angle) * i;
+                    var y = canvasY + Math.sin(angle) * i;
+                    context.beginPath();
+                    context.arc(x, y, 20.0, 0, 2 * Math.PI);
+                    context.fillStyle = "black";
+                    context.fill();
+                }
                 canvasX = newCanvasX;
                 canvasY = newCanvasY;
             }
         }
+
+        
 
         // Submit the image data when the user is done drawing
         function submitImage() {
@@ -62,6 +69,6 @@
             onmouseup="stopDrawing()"
             onmousemove="draw(event)"></canvas>
     <br>
-    <button onclick="submitImage()">Save Image</button>
+    <button onclick="submitImage()">Predict Image</button>
 </body>
 </html>
